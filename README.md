@@ -16,11 +16,3 @@ A polished personal portfolio for Rohan Mehta, focused on Data Analytics, Busine
 
 ## Run locally
 Open `index.html` directly in a browser, or serve the folder with any static web server.
-
-## Deploy
-Upload the contents to GitHub Pages, Netlify, Vercel, Cloudflare Pages, or another static host.
-
-## Assets
-- `assets/profile-photo.jpeg` - supplied Rohan Mehta profile photo used in the navbar and enlarged profile viewer.
-- `assets/apple-dashboard/` - four locally bundled Apple Power BI screenshots.
-- `assets/certificates/` - Imarticus Learning, Deloitte, JPMorgan Chase & Co., and Quantium certificate PDFs supplied for the portfolio.
