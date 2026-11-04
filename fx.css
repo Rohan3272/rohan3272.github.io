@@ -7,19 +7,8 @@
 /* ---------- Boot sequence (first visit per tab session) ---------- */
 .boot{display:none}
 html.booting{overflow:hidden}
-html.booting .boot{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at 50% 40%,#0b1c30,#050b14 70%);cursor:pointer;animation:boot-failsafe .4s 9s forwards}
-.boot.done{animation:boot-glitch-out .75s steps(1) forwards!important}
-.boot-granted{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.9);font:700 clamp(28px,6vw,64px) 'DM Mono',monospace;letter-spacing:.18em;color:var(--green);text-shadow:0 0 18px rgba(141,255,183,.8),0 0 60px rgba(141,255,183,.35);opacity:0;pointer-events:none;white-space:nowrap}
-.boot-granted::before,.boot-granted::after{content:attr(data-text);position:absolute;inset:0;mix-blend-mode:screen}
-.boot-granted::before{color:#ff5fa2;transform:translate(-3px,0);clip-path:inset(10% 0 55% 0)}
-.boot-granted::after{color:var(--cyan);transform:translate(3px,0);clip-path:inset(60% 0 5% 0)}
-.boot.granted .boot-term{animation:term-collapse .35s cubic-bezier(.7,0,.3,1) forwards}
-.boot.granted .boot-granted{animation:granted-in .9s cubic-bezier(.2,.8,.2,1) forwards}
-.boot.granted::before{content:"";position:absolute;inset:0;background:rgba(141,255,183,.12);animation:flash .5s ease-out forwards;pointer-events:none}
-@keyframes term-collapse{to{transform:scaleY(.02) scaleX(.6);opacity:0;filter:brightness(3)}}
-@keyframes granted-in{0%{opacity:0;transform:translate(-50%,-50%) scale(1.25);filter:blur(8px)}25%{opacity:1;filter:none;transform:translate(-50%,-50%) scale(1)}35%{opacity:.3}45%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-@keyframes flash{from{opacity:1}to{opacity:0}}
-@keyframes boot-glitch-out{0%{clip-path:inset(0);transform:none}15%{clip-path:inset(20% 0 45% 0);transform:translateX(-14px)}30%{clip-path:inset(55% 0 10% 0);transform:translateX(12px)}45%{clip-path:inset(5% 0 70% 0);transform:translateX(-6px)}60%{clip-path:inset(35% 0 35% 0);transform:translateX(8px);opacity:.7}75%{clip-path:inset(48% 0 48% 0);opacity:.4}100%{clip-path:inset(50% 0 50% 0);opacity:0;visibility:hidden}}
+html.booting .boot{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at 50% 40%,#0b1c30,#050b14 70%);cursor:pointer;animation:boot-failsafe .4s 7s forwards}
+.boot.done{animation:boot-out .55s cubic-bezier(.7,0,.3,1) forwards!important}
 .boot-term{position:relative;width:min(560px,100%);border:1px solid rgba(101,230,255,.22);border-radius:14px;background:rgba(6,16,28,.92);box-shadow:0 0 0 1px rgba(101,230,255,.05),0 30px 120px rgba(0,0,0,.5),0 0 80px rgba(101,230,255,.06);overflow:hidden}
 .boot-bar,.term-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--line);font:500 10px 'DM Mono';color:#6d8297;letter-spacing:.06em}
 .boot-bar i,.term-bar i{width:9px;height:9px;border-radius:50%;background:#2a3c52}
@@ -41,7 +30,7 @@ html.booting .boot{position:fixed;inset:0;z-index:100;display:flex;align-items:c
 
 /* ---------- Hero code rain ---------- */
 .hero{isolation:isolate}
-.code-rain{position:absolute;top:0;left:50%;width:100vw;height:100%;transform:translateX(-50%);z-index:-1;pointer-events:none;opacity:1;-webkit-mask-image:linear-gradient(to bottom,#000 70%,transparent),radial-gradient(ellipse 95% 100% at 55% 45%,#000 35%,rgba(0,0,0,.45) 85%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,#000 70%,transparent),radial-gradient(ellipse 95% 100% at 55% 45%,#000 35%,rgba(0,0,0,.45) 85%);mask-composite:intersect}
+.code-rain{position:absolute;top:0;left:50%;width:100vw;height:100%;transform:translateX(-50%);z-index:-1;pointer-events:none;opacity:.5;-webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent),radial-gradient(ellipse 85% 95% at 60% 45%,#000 25%,rgba(0,0,0,.25) 80%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,#000 60%,transparent),radial-gradient(ellipse 85% 95% at 60% 45%,#000 25%,rgba(0,0,0,.25) 80%);mask-composite:intersect}
 .hero-copy{position:relative}
 .hero-copy::before{content:"";position:absolute;inset:-40px -60px;z-index:-1;background:radial-gradient(ellipse at 40% 50%,rgba(7,17,31,.88),rgba(7,17,31,.55) 55%,transparent 75%);pointer-events:none}
 
@@ -50,15 +39,12 @@ html.booting .boot{position:fixed;inset:0;z-index:100;display:flex;align-items:c
 .glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;opacity:0}
 .glitch::before{color:#ff5fa2;transform:translate(-2px,0);mix-blend-mode:screen}
 .glitch::after{color:var(--green);transform:translate(2px,0);mix-blend-mode:screen}
-.js .glitch::before{animation:glitch-a 3.2s infinite steps(1)}
-.js .glitch::after{animation:glitch-b 3.2s infinite steps(1)}
-.js .glitch{animation:glitch-skew 3.2s infinite steps(1)}
-.js .glitch:hover::before{animation:glitch-a .7s infinite steps(1)}
-.js .glitch:hover::after{animation:glitch-b .7s infinite steps(1)}
-.js .glitch:hover{animation:glitch-skew .7s infinite steps(1);cursor:crosshair}
-/* section headings glitch on hover too */
-.js .section-head h2 em,.js .case-hero h3{position:relative}
-.js .section-head h2:hover em,.js .case-hero h3:hover{animation:glitch-skew .7s infinite steps(1);text-shadow:-2px 0 rgba(255,95,162,.6),2px 0 rgba(141,255,183,.6)}
+/* subtle colour split only, every ~10s, no skew */
+.js .glitch::before{animation:glitch-a 10s infinite steps(1)}
+.js .glitch::after{animation:glitch-b 10s infinite steps(1)}
+.glitch::before,.glitch::after{transform:translate(-1px,0)}
+@keyframes glitch-a{0%,95%,100%{opacity:0}95.5%{opacity:.45;clip-path:inset(20% 0 55% 0)}96.5%{opacity:.45;clip-path:inset(60% 0 12% 0)}97.5%{opacity:0}}
+@keyframes glitch-b{0%,95%,100%{opacity:0}96%{opacity:.4;clip-path:inset(50% 0 25% 0);transform:translate(1px,0)}97%{opacity:.4;clip-path:inset(10% 0 70% 0);transform:translate(1px,0)}98%{opacity:0}}
 @keyframes glitch-a{0%,91%,100%{opacity:0;clip-path:inset(0 0 0 0)}92%{opacity:.85;clip-path:inset(12% 0 58% 0);transform:translate(-4px,-1px)}94%{opacity:.85;clip-path:inset(62% 0 8% 0);transform:translate(3px,1px)}96%{opacity:.85;clip-path:inset(35% 0 40% 0);transform:translate(-2px,0)}97%{opacity:0}}
 @keyframes glitch-b{0%,91%,100%{opacity:0;clip-path:inset(0 0 0 0)}92.5%{opacity:.8;clip-path:inset(55% 0 18% 0);transform:translate(4px,1px)}94.5%{opacity:.8;clip-path:inset(8% 0 70% 0);transform:translate(-3px,-1px)}96.5%{opacity:.8;clip-path:inset(42% 0 30% 0);transform:translate(2px,0)}97.5%{opacity:0}}
 @keyframes glitch-skew{0%,91%,98%,100%{transform:none}93%{transform:skewX(-6deg)}95%{transform:skewX(4deg) translateX(1px)}}
@@ -109,7 +95,7 @@ html.booting .boot{position:fixed;inset:0;z-index:100;display:flex;align-items:c
 .term-bar span::after{content:"";display:inline-block;width:7px;height:12px;margin-left:6px;vertical-align:-2px;background:var(--cyan);animation:blink 1s steps(1) infinite}
 
 /* ---------- Reveal upgrade: blur-in ---------- */
-.js .reveal{filter:blur(6px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1),filter .9s ease}
+.js .reveal{filter:blur(3px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1),filter .9s ease}
 .js .reveal.visible{filter:none}
 
 /* ---------- Pulse ring for live dots ---------- */
@@ -154,7 +140,6 @@ html.booting .boot{position:fixed;inset:0;z-index:100;display:flex;align-items:c
   .js .glitch,.js .glitch::before,.js .glitch::after,.caret,.term-bar span::after,.pulse::after{animation:none!important}
   .code-rain,.boot,.crosshair{display:none!important}
   .crt::after{animation:none;display:none}
-  .js .section-head h2:hover em,.js .case-hero h3:hover{animation:none}
   .js .reveal{filter:none}
   .project:hover::after,.flow-step:hover::after,.cert:hover::after{animation:none}
 }

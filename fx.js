@@ -16,7 +16,7 @@
     bootEnded = true;
     try { sessionStorage.setItem('booted', '1'); } catch (e) {}
     boot.classList.add('done');
-    setTimeout(() => root.classList.remove('booting'), 760);
+    setTimeout(() => root.classList.remove('booting'), 600);
   }
   // progress bar + ACCESS GRANTED, then glitch out
   function bootFinale(html, cursor) {
@@ -27,10 +27,7 @@
       const fill = Math.round(W * p / 100);
       log.innerHTML = html + '<span class="hl">decrypting portfolio</span> [<span class="ok">' + '█'.repeat(fill) + '</span>' + '░'.repeat(W - fill) + '] ' + String(Math.floor(p)).padStart(3) + '%' + cursor;
       if (p < 100) setTimeout(tick, 45 + Math.random() * 60);
-      else setTimeout(() => {
-        boot.classList.add('granted');
-        setTimeout(endBoot, 950);
-      }, 180);
+      else setTimeout(endBoot, 350);
     };
     tick();
   }
@@ -104,7 +101,7 @@
       w = canvas.offsetWidth; h = canvas.offsetHeight;
       canvas.width = w * dpr; canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.ceil(w / (SIZE * 1.2));
+      const n = Math.ceil(w / (SIZE * 1.8));
       cols = Array.from({ length: n }, () => ({ y: Math.random() * -h, speed: .35 + Math.random() * .9, word: null, wi: 0 }));
     };
     resize();
@@ -115,21 +112,19 @@
       if (!running || document.hidden) return;
       if (t - last > 50) { // ~20fps keeps it calm and cheap
         last = t;
-        ctx.fillStyle = 'rgba(7,17,31,0.11)';
+        ctx.fillStyle = 'rgba(7,17,31,0.15)';
         ctx.fillRect(0, 0, w, h);
-        ctx.font = '500 ' + SIZE * .85 + 'px "DM Mono", monospace';
+        ctx.font = '500 ' + SIZE * .8 + 'px "DM Mono", monospace';
         cols.forEach((c, i) => {
-          const x = i * SIZE * 1.2;
+          const x = i * SIZE * 1.8;
           let ch;
           if (c.word) { ch = c.word[c.wi++]; if (c.wi >= c.word.length) c.word = null; }
           else { if (Math.random() < .012) { c.word = rand(WORDS); c.wi = 0; } ch = rand(GLYPHS); }
-          const head = Math.random() < .1;
-          ctx.shadowBlur = head ? 8 : 0;
-          ctx.shadowColor = 'rgba(101,230,255,.9)';
-          ctx.fillStyle = head ? 'rgba(220,252,255,1)' : (c.word ? 'rgba(141,255,183,.85)' : 'rgba(101,230,255,.7)');
+          const head = Math.random() < .06;
+          ctx.fillStyle = head ? 'rgba(200,245,255,.75)' : (c.word ? 'rgba(141,255,183,.5)' : 'rgba(101,230,255,.4)');
           ctx.fillText(ch, x, c.y);
           c.y += SIZE * c.speed;
-          if (c.y > h + 20 && Math.random() > .96) { c.y = -20; c.speed = .35 + Math.random() * .9; }
+          if (c.y > h + 20 && Math.random() > .97) { c.y = -20; c.speed = .3 + Math.random() * .6; }
         });
       }
       requestAnimationFrame(draw);
@@ -167,21 +162,15 @@
     };
     requestAnimationFrame(frame);
   }
-  const decodeTargets = document.querySelectorAll('.section-label, .section-head h2, .case-hero h3, .flow-step h4, .eyebrow, .cert-top span');
+  // small mono labels only; big headings stay still
+  const decodeTargets = document.querySelectorAll('.section-label, .eyebrow, .cert-top span, .flow-step small');
   const decodeObs = new IntersectionObserver(entries => entries.forEach(e => {
     if (!e.isIntersecting) return;
     decodeObs.unobserve(e.target);
-    const delay = root.classList.contains('booting') && !bootEnded ? 5600 : 0;
-    setTimeout(() => scramble(e.target, e.target.matches('h2,h3') ? 1100 : 750), delay);
+    const delay = root.classList.contains('booting') && !bootEnded ? 4200 : 0;
+    setTimeout(() => scramble(e.target, 700), delay);
   }), { threshold: .6 });
   decodeTargets.forEach(el => decodeObs.observe(el));
-  // re-decode headings on hover for a bit of play
-  document.querySelectorAll('.flow-step h4, .project-body h3').forEach(h => {
-    let busy = false;
-    h.closest('.flow-step, .project')?.addEventListener('mouseenter', () => {
-      if (busy) return; busy = true; scramble(h, 500); setTimeout(() => busy = false, 700);
-    });
-  });
 
   /* ---------- Decrypt text on hover for buttons & links ---------- */
   document.querySelectorAll('.btn, .nav-cta, .project-link, .cert-link, .text-link, .quick-links a').forEach(b => {
@@ -267,7 +256,7 @@
         else setTimeout(tick, 45 + Math.random() * 55);
       }
     };
-    setTimeout(tick, root.classList.contains('booting') ? 7000 : 2400);
+    setTimeout(tick, root.classList.contains('booting') ? 5200 : 2400);
   }
 
   /* ---------- Count-up for stat numbers ---------- */
