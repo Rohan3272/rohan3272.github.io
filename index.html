@@ -10,8 +10,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,500;1,600;1,700&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="fx.css" />
+  <script>(function(){var d=document.documentElement;d.classList.add('js');try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('booted'))d.classList.add('booting')}catch(e){}})();</script>
 </head>
 <body>
+  <div class="boot" aria-hidden="true"><div class="boot-term"><div class="boot-bar"><i></i><i></i><i></i><span>rohan@portfolio: ~</span></div><pre class="boot-log"></pre><span class="boot-skip">click to skip</span></div></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
   <div class="noise"></div>
   <div class="cursor-glow"></div>
   <div class="grid-bg"></div>
@@ -35,8 +39,9 @@
     <section class="hero shell reveal">
       <div class="hero-copy">
         <div class="eyebrow"><span class="pulse"></span> DATA ANALYST · WEB & AUTOMATION · AI</div>
-        <h1>I turn messy data into <em>decisions.</em></h1>
+        <h1>I turn messy data into <em class="glitch" data-text="decisions.">decisions.</em></h1>
         <p class="hero-text">I’m Rohan Mehta, a data analyst and full stack developer at ILACAD, where I automate manual processes, manage databases and build web products. I also work in business intelligence, machine learning and practical AI.</p>
+        <div class="hero-term" aria-label="Roles: full stack developer at ILACAD, data analyst, automation builder, ML engineer"><span class="prompt">rohan@ilacad:~$</span> <span class="typed" data-words="full_stack_dev --at ilacad|data_analyst --mode insights|automate --manual-work=0|train_model --nlp --classes 41|deploy --host hostinger">full_stack_dev --at ilacad</span><span class="caret"></span></div>
         <div class="hero-actions">
           <a class="btn primary" href="#experience">Explore my work <span>↓</span></a>
           <a class="btn ghost" href="assets/Rohan-Mehta-Resume-2026.pdf" target="_blank" rel="noreferrer">View resume <span>↗</span></a>
@@ -77,6 +82,7 @@
       <div class="section-head reveal"><div><span class="section-label">01 / EXPERIENCE</span><h2>Shipping inside a <em>real business.</em></h2></div><p>Six production systems in roughly six weeks at ILACAD, built while learning how the company actually runs.</p></div>
 
       <article class="case-study reveal exp-card">
+        <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>~/ilacad/projects <b>$</b> ls --shipped</span></div>
         <div class="case-hero">
           <div>
             <span class="section-label">ILACAD · FULL-TIME · MUMBAI · SEP 2026 – PRESENT</span>
@@ -244,5 +250,6 @@
 
   <footer class="footer shell"><span>© 2026 Rohan Mehta</span><span>Built around data, decisions & curiosity.</span><a href="#top">Back to top ↑</a></footer>
   <script src="script.js"></script>
+  <script src="fx.js"></script>
 </body>
 </html>

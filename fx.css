@@ -1,0 +1,111 @@
+/* ==========================================================
+   FX layer: terminal / hacker-style motion on top of styles.css
+   Everything here degrades to the static design without JS and
+   is switched off under prefers-reduced-motion.
+   ========================================================== */
+
+/* ---------- Boot sequence (first visit per tab session) ---------- */
+.boot{display:none}
+html.booting{overflow:hidden}
+html.booting .boot{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at 50% 40%,#0b1c30,#050b14 70%);cursor:pointer;animation:boot-failsafe .4s 5s forwards}
+.boot.done{animation:boot-out .55s cubic-bezier(.7,0,.3,1) forwards!important}
+.boot-term{position:relative;width:min(560px,100%);border:1px solid rgba(101,230,255,.22);border-radius:14px;background:rgba(6,16,28,.92);box-shadow:0 0 0 1px rgba(101,230,255,.05),0 30px 120px rgba(0,0,0,.5),0 0 80px rgba(101,230,255,.06);overflow:hidden}
+.boot-bar,.term-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--line);font:500 10px 'DM Mono';color:#6d8297;letter-spacing:.06em}
+.boot-bar i,.term-bar i{width:9px;height:9px;border-radius:50%;background:#2a3c52}
+.boot-bar i:first-child,.term-bar i:first-child{background:#ff6b7f}
+.boot-bar i:nth-child(2),.term-bar i:nth-child(2){background:#ffd36b}
+.boot-bar i:nth-child(3),.term-bar i:nth-child(3){background:var(--green)}
+.boot-bar span,.term-bar span{margin-left:8px}
+.boot-log{margin:0;padding:20px 20px 26px;min-height:190px;font:400 12.5px/1.75 'DM Mono',monospace;color:#9fb6ca;white-space:pre-wrap}
+.boot-log .ok{color:var(--green)}
+.boot-log .hl{color:var(--cyan)}
+.boot-log .cur{display:inline-block;width:8px;height:14px;background:var(--cyan);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+.boot-skip{position:absolute;right:14px;bottom:10px;font:500 9px 'DM Mono';color:#4f6478;letter-spacing:.1em;text-transform:uppercase}
+.boot-term::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.025) 0 1px,transparent 1px 3px)}
+@keyframes boot-out{to{opacity:0;visibility:hidden;transform:scale(1.02);filter:blur(6px)}}
+@keyframes boot-failsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
+
+/* ---------- Scroll progress ---------- */
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:40;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 12px rgba(101,230,255,.7);pointer-events:none}
+
+/* ---------- Hero code rain ---------- */
+.hero{isolation:isolate}
+.code-rain{position:absolute;top:0;left:50%;width:100vw;height:100%;transform:translateX(-50%);z-index:-1;pointer-events:none;opacity:.8;-webkit-mask-image:radial-gradient(ellipse 80% 85% at 62% 45%,#000 20%,transparent 78%);mask-image:radial-gradient(ellipse 80% 85% at 62% 45%,#000 20%,transparent 78%)}
+
+/* ---------- Glitch headline word ---------- */
+.glitch{position:relative;display:inline-block}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;opacity:0}
+.glitch::before{color:#ff5fa2;transform:translate(-2px,0);mix-blend-mode:screen}
+.glitch::after{color:var(--green);transform:translate(2px,0);mix-blend-mode:screen}
+.js .glitch::before{animation:glitch-a 7s infinite steps(1)}
+.js .glitch::after{animation:glitch-b 7s infinite steps(1)}
+.js .glitch{animation:glitch-skew 7s infinite steps(1)}
+@keyframes glitch-a{0%,91%,100%{opacity:0;clip-path:inset(0 0 0 0)}92%{opacity:.85;clip-path:inset(12% 0 58% 0);transform:translate(-4px,-1px)}94%{opacity:.85;clip-path:inset(62% 0 8% 0);transform:translate(3px,1px)}96%{opacity:.85;clip-path:inset(35% 0 40% 0);transform:translate(-2px,0)}97%{opacity:0}}
+@keyframes glitch-b{0%,91%,100%{opacity:0;clip-path:inset(0 0 0 0)}92.5%{opacity:.8;clip-path:inset(55% 0 18% 0);transform:translate(4px,1px)}94.5%{opacity:.8;clip-path:inset(8% 0 70% 0);transform:translate(-3px,-1px)}96.5%{opacity:.8;clip-path:inset(42% 0 30% 0);transform:translate(2px,0)}97.5%{opacity:0}}
+@keyframes glitch-skew{0%,91%,98%,100%{transform:none}93%{transform:skewX(-6deg)}95%{transform:skewX(4deg) translateX(1px)}}
+
+/* ---------- Hero terminal line ---------- */
+.hero-term{display:inline-flex;align-items:center;flex-wrap:wrap;gap:0 8px;margin-top:22px;padding:9px 14px;border:1px solid var(--line);border-radius:10px;background:rgba(5,13,23,.6);font:400 12.5px 'DM Mono',monospace;color:var(--text);max-width:100%}
+.hero-term .prompt{color:var(--green)}
+.hero-term .typed{color:var(--cyan);white-space:pre}
+.caret{display:inline-block;width:8px;height:15px;margin-left:2px;background:var(--cyan);box-shadow:0 0 10px rgba(101,230,255,.6);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* ---------- Text decode (scramble) ---------- */
+.scrambling{color:var(--cyan)!important}
+.scrambling .sc{opacity:.55}
+
+/* ---------- Nav: bracket hover ---------- */
+.nav-links a{position:relative;transition:color .2s}
+.nav-links a::before,.nav-links a::after{position:absolute;top:50%;font:500 11px 'DM Mono';color:var(--cyan);opacity:0;transform:translateY(-50%);transition:opacity .2s,transform .2s}
+.nav-links a::before{content:"[";left:-10px;transform:translate(4px,-50%)}
+.nav-links a::after{content:"]";right:-10px;transform:translate(-4px,-50%)}
+.nav-links a:hover::before,.nav-links a:hover::after{opacity:1;transform:translate(0,-50%)}
+.nav-links a:hover{color:var(--text)}
+
+/* ---------- Buttons: shimmer sweep ---------- */
+.btn{position:relative;overflow:hidden}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(101,230,255,.28) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s ease}
+.btn:hover::after{transform:translateX(120%)}
+
+/* ---------- Cards: scan line + corner brackets + spotlight ---------- */
+.project,.flow-step,.cert,.case-study{--mx:50%;--my:50%}
+.flow-step,.cert{position:relative;overflow:hidden}
+.project::before,.flow-step::before,.cert::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;transition:opacity .35s;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(101,230,255,.08),transparent 45%)}
+.project:hover::before,.flow-step:hover::before,.cert:hover::before{opacity:1}
+.project{position:relative}
+.project::after,.flow-step::after,.cert::after{content:"";position:absolute;left:0;right:0;top:-30%;height:30%;pointer-events:none;z-index:2;opacity:0;background:linear-gradient(to bottom,transparent,rgba(101,230,255,.07) 70%,rgba(101,230,255,.35) 98%,transparent)}
+.project:hover::after,.flow-step:hover::after,.cert:hover::after{animation:scan 1.3s cubic-bezier(.4,0,.2,1) 1}
+@keyframes scan{0%{top:-30%;opacity:1}100%{top:110%;opacity:1}}
+.flow-step{transition:background .35s}
+.flow-step:hover{background:rgba(101,230,255,.025)}
+.flow-step>span{transition:letter-spacing .3s,color .3s}
+.flow-step:hover>span{letter-spacing:.3em;text-shadow:0 0 12px rgba(101,230,255,.7)}
+.flow-step>span::before{content:"0x";opacity:.45}
+
+/* ---------- ILACAD terminal header ---------- */
+.term-bar{background:rgba(3,10,18,.55)}
+.term-bar span{color:#8aa0b5}
+.term-bar b{color:var(--green);font-weight:500}
+.term-bar span::after{content:"";display:inline-block;width:7px;height:12px;margin-left:6px;vertical-align:-2px;background:var(--cyan);animation:blink 1s steps(1) infinite}
+
+/* ---------- Reveal upgrade: blur-in ---------- */
+.js .reveal{filter:blur(6px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1),filter .9s ease}
+.js .reveal.visible{filter:none}
+
+/* ---------- Pulse ring for live dots ---------- */
+.pulse{position:relative}
+.pulse::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid var(--green);animation:ring 1.8s ease-out infinite}
+@keyframes ring{from{transform:scale(.4);opacity:.9}to{transform:scale(1.6);opacity:0}}
+
+/* ---------- Mobile ---------- */
+.exp-card .case-hero>div:first-child .section-label{white-space:normal;line-height:1.7}
+@media(max-width:620px){.hero-term{font-size:11px}.code-rain{opacity:.35}.boot-log{font-size:11px;min-height:170px}}
+
+/* ---------- Reduced motion: keep it calm ---------- */
+@media(prefers-reduced-motion:reduce){
+  .js .glitch,.js .glitch::before,.js .glitch::after,.caret,.term-bar span::after,.pulse::after{animation:none!important}
+  .code-rain,.boot{display:none!important}
+  .js .reveal{filter:none}
+  .project:hover::after,.flow-step:hover::after,.cert:hover::after{animation:none}
+}
