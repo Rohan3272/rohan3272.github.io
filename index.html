@@ -11,13 +11,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,500;1,600;1,700&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="fx.css" />
-  <script>(function(){var d=document.documentElement;d.classList.add('js');try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('booted'))d.classList.add('booting')}catch(e){}})();</script>
+  <script>(function(){var d=document.documentElement,n=navigator;d.classList.add('js');if((n.hardwareConcurrency&&n.hardwareConcurrency<=4)||(n.deviceMemory&&n.deviceMemory<=4)||(n.connection&&n.connection.saveData))d.classList.add('lite');try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('booted'))d.classList.add('booting')}catch(e){}})();</script>
 </head>
 <body>
   <div class="boot" aria-hidden="true"><div class="boot-term"><div class="boot-bar"><i></i><i></i><i></i><span>rohan@portfolio: ~</span></div><pre class="boot-log"></pre><span class="boot-skip">click to skip</span></div></div>
-  <div class="crt" aria-hidden="true"></div>
-  <div class="crosshair" aria-hidden="true"><i></i><span class="xy">x:0000 y:0000</span></div>
-  <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="crt" aria-hidden="true"></div>  <div class="scroll-progress" aria-hidden="true"></div>
   <div class="noise"></div>
   <div class="cursor-glow"></div>
   <div class="grid-bg"></div>

@@ -74,20 +74,27 @@
     update();
   }
 
-  /* ---------- Card spotlight follows pointer ---------- */
+  /* ---------- Card spotlight follows pointer (one update per frame) ---------- */
   document.querySelectorAll('.project,.flow-step,.cert').forEach(card => {
+    let pending = null;
     card.addEventListener('pointermove', e => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
-    });
+      if (pending) { pending = e; return; }
+      pending = e;
+      requestAnimationFrame(() => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (pending.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (pending.clientY - r.top) + 'px');
+        pending = null;
+      });
+    }, { passive: true });
   });
+  const lite = root.classList.contains('lite');
 
   if (reduce) return; // everything below is pure motion
 
   /* ---------- Hero code rain ---------- */
   const hero = document.querySelector('.hero');
-  if (hero) {
+  if (hero && !lite && innerWidth > 700) { // skipped on low-end devices and phones
     const canvas = document.createElement('canvas');
     canvas.className = 'code-rain';
     canvas.setAttribute('aria-hidden', 'true');
@@ -97,7 +104,7 @@
     const WORDS = ['SELECT', 'JOIN', 'WHERE', 'def', 'fit()', 'df[]', '<?php', 'INSERT', 'GROUP BY', 'np.', 'λ', '{ }', '=>'];
     let cols = [], w = 0, h = 0, dpr = 1, running = true, last = 0;
     const resize = () => {
-      dpr = Math.min(devicePixelRatio || 1, 2);
+      dpr = 1; // faint background texture: no need for retina resolution
       w = canvas.offsetWidth; h = canvas.offsetHeight;
       canvas.width = w * dpr; canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -105,12 +112,13 @@
       cols = Array.from({ length: n }, () => ({ y: Math.random() * -h, speed: .35 + Math.random() * .9, word: null, wi: 0 }));
     };
     resize();
-    addEventListener('resize', resize);
+    let rt;
+    addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 200); });
     new IntersectionObserver(([e]) => { running = e.isIntersecting; if (running) requestAnimationFrame(draw); }).observe(hero);
     document.addEventListener('visibilitychange', () => { if (!document.hidden && running) requestAnimationFrame(draw); });
     function draw(t) {
       if (!running || document.hidden) return;
-      if (t - last > 50) { // ~20fps keeps it calm and cheap
+      if (t - last > 66) { // ~15fps keeps it calm and cheap
         last = t;
         ctx.fillStyle = 'rgba(7,17,31,0.15)';
         ctx.fillRect(0, 0, w, h);
@@ -192,27 +200,6 @@
       setTimeout(() => { busy = false; }, 500);
     });
   });
-
-  /* ---------- Crosshair cursor follower ---------- */
-  const cross = document.querySelector('.crosshair');
-  if (cross && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    const xy = cross.querySelector('.xy');
-    let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
-    const pad = n => String(Math.round(n)).padStart(4, '0');
-    const loop = () => {
-      cx += (tx - cx) * .22; cy += (ty - cy) * .22;
-      cross.style.transform = 'translate(' + cx + 'px,' + cy + 'px)';
-      if (Math.abs(tx - cx) + Math.abs(ty - cy) > .3) raf = requestAnimationFrame(loop); else raf = 0;
-    };
-    addEventListener('pointermove', e => {
-      tx = e.clientX; ty = e.clientY;
-      xy.textContent = 'x:' + pad(e.pageX) + ' y:' + pad(e.pageY);
-      cross.classList.add('on');
-      cross.classList.toggle('hot', !!e.target.closest('a,button,.project,.flow-step,.cert'));
-      if (!raf) raf = requestAnimationFrame(loop);
-    }, { passive: true });
-    document.addEventListener('pointerleave', () => cross.classList.remove('on'));
-  }
 
   /* ---------- Image decrypt on reveal ---------- */
   const shots = document.querySelectorAll('.dashboard-shot, .cert-preview');

@@ -1,5 +1,7 @@
 const glow=document.querySelector('.cursor-glow');
-window.addEventListener('pointermove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'});
+// transform (not left/top) and one write per frame, so moving the mouse never triggers layout
+let glowX=0,glowY=0,glowRaf=0;
+window.addEventListener('pointermove',e=>{glowX=e.clientX;glowY=e.clientY;if(!glowRaf)glowRaf=requestAnimationFrame(()=>{glow.style.transform='translate3d('+glowX+'px,'+glowY+'px,0) translate(-50%,-50%)';glowRaf=0})},{passive:true});
 const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible')}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
